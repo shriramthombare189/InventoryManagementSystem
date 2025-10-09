@@ -1,0 +1,2 @@
+This is a test file to verify static resource serving.
+If you can fetch this, static files are served correctly.
