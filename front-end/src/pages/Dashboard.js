@@ -11,47 +11,114 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { IndianRupee, CreditCard, Wallet, Clock } from "lucide-react"; // Added icons
+import { IndianRupee, CreditCard, Wallet, Clock } from "lucide-react";
 
 export default function Dashboard() {
   const [filter, setFilter] = useState("month");
+  const [graphType, setGraphType] = useState("sales");
 
-  // Dummy stock data
-  const dataOptions = {
-    day: [
-      { name: "Mon", stock: 240 },
-      { name: "Tue", stock: 320 },
-      { name: "Wed", stock: 180 },
-      { name: "Thu", stock: 290 },
-      { name: "Fri", stock: 310 },
-      { name: "Sat", stock: 200 },
-      { name: "Sun", stock: 150 },
-    ],
-    month: [
-      { name: "Jan", stock: 2200 },
-      { name: "Feb", stock: 1800 },
-      { name: "Mar", stock: 2600 },
-      { name: "Apr", stock: 3000 },
-      { name: "May", stock: 2800 },
-      { name: "Jun", stock: 3100 },
-      { name: "Jul", stock: 3500 },
-      { name: "Aug", stock: 2900 },
-      { name: "Sep", stock: 2700 },
-      { name: "Oct", stock: 4000 },
-      { name: "Nov", stock: 3600 },
-      { name: "Dec", stock: 4100 },
-    ],
-    year: [
-      { name: "2020", stock: 18000 },
-      { name: "2021", stock: 22000 },
-      { name: "2022", stock: 25000 },
-      { name: "2023", stock: 30000 },
-      { name: "2024", stock: 34000 },
-      { name: "2025", stock: 38000 },
-    ],
+  // Dummy data for all graph types
+  const graphData = {
+    sales: {
+      day: [
+        { name: "Mon", sales: 400, purchases: 300 },
+        { name: "Tue", sales: 500, purchases: 350 },
+        { name: "Wed", sales: 450, purchases: 200 },
+        { name: "Thu", sales: 600, purchases: 400 },
+        { name: "Fri", sales: 700, purchases: 500 },
+        { name: "Sat", sales: 800, purchases: 600 },
+        { name: "Sun", sales: 650, purchases: 500 },
+      ],
+      month: [
+        { name: "Jan", sales: 4000, purchases: 3500 },
+        { name: "Feb", sales: 4500, purchases: 3800 },
+        { name: "Mar", sales: 5000, purchases: 4200 },
+        { name: "Apr", sales: 5200, purchases: 4500 },
+        { name: "May", sales: 6000, purchases: 5000 },
+        { name: "Jun", sales: 7000, purchases: 5500 },
+        { name: "Jul", sales: 7500, purchases: 5800 },
+        { name: "Aug", sales: 7200, purchases: 6000 },
+        { name: "Sep", sales: 8000, purchases: 6400 },
+        { name: "Oct", sales: 8500, purchases: 7000 },
+        { name: "Nov", sales: 9000, purchases: 7600 },
+        { name: "Dec", sales: 9500, purchases: 8000 },
+      ],
+      year: [
+        { name: "2021", sales: 40000, purchases: 35000 },
+        { name: "2022", sales: 48000, purchases: 39000 },
+        { name: "2023", sales: 55000, purchases: 44000 },
+        { name: "2024", sales: 60000, purchases: 50000 },
+        { name: "2025", sales: 68000, purchases: 54000 },
+      ],
+    },
+    profit: {
+      day: [
+        { name: "Mon", profit: 100, loss: 20 },
+        { name: "Tue", profit: 120, loss: 30 },
+        { name: "Wed", profit: 90, loss: 25 },
+        { name: "Thu", profit: 140, loss: 40 },
+        { name: "Fri", profit: 160, loss: 50 },
+        { name: "Sat", profit: 180, loss: 60 },
+        { name: "Sun", profit: 130, loss: 35 },
+      ],
+      month: [
+        { name: "Jan", profit: 4000, loss: 1200 },
+        { name: "Feb", profit: 4200, loss: 1500 },
+        { name: "Mar", profit: 4600, loss: 1600 },
+        { name: "Apr", profit: 4800, loss: 1800 },
+        { name: "May", profit: 5200, loss: 1900 },
+        { name: "Jun", profit: 5500, loss: 2100 },
+        { name: "Jul", profit: 6000, loss: 2300 },
+        { name: "Aug", profit: 6400, loss: 2500 },
+        { name: "Sep", profit: 6600, loss: 2600 },
+        { name: "Oct", profit: 6800, loss: 2800 },
+        { name: "Nov", profit: 7200, loss: 2900 },
+        { name: "Dec", profit: 7400, loss: 3000 },
+      ],
+      year: [
+        { name: "2021", profit: 40000, loss: 15000 },
+        { name: "2022", profit: 45000, loss: 18000 },
+        { name: "2023", profit: 50000, loss: 20000 },
+        { name: "2024", profit: 54000, loss: 23000 },
+        { name: "2025", profit: 58000, loss: 25000 },
+      ],
+    },
+    billing: {
+      day: [
+        { name: "Mon", bills: 25 },
+        { name: "Tue", bills: 30 },
+        { name: "Wed", bills: 28 },
+        { name: "Thu", bills: 35 },
+        { name: "Fri", bills: 40 },
+        { name: "Sat", bills: 45 },
+        { name: "Sun", bills: 20 },
+      ],
+      month: [
+        { name: "Jan", bills: 400 },
+        { name: "Feb", bills: 380 },
+        { name: "Mar", bills: 420 },
+        { name: "Apr", bills: 450 },
+        { name: "May", bills: 480 },
+        { name: "Jun", bills: 500 },
+        { name: "Jul", bills: 550 },
+        { name: "Aug", bills: 530 },
+        { name: "Sep", bills: 560 },
+        { name: "Oct", bills: 590 },
+        { name: "Nov", bills: 610 },
+        { name: "Dec", bills: 640 },
+      ],
+      year: [
+        { name: "2021", bills: 4200 },
+        { name: "2022", bills: 4500 },
+        { name: "2023", bills: 4800 },
+        { name: "2024", bills: 5200 },
+        { name: "2025", bills: 5500 },
+      ],
+    },
   };
 
-  // Dummy financials
+  const currentData = graphData[graphType][filter];
+
   const investment = 120000;
   const revenue = 200000;
   const profit = revenue - investment;
@@ -72,7 +139,7 @@ export default function Dashboard() {
           Grocery Inventory Dashboard
         </h2>
 
-        {/* === TOP 3 FINANCIAL CARDS === */}
+        {/* Top 3 Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
           {[
             {
@@ -110,7 +177,7 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* === NEW 3 RECEIVABLE CARDS === */}
+        {/* New Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
           {[
             {
@@ -148,31 +215,48 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* === GRAPH FILTER BUTTONS === */}
-        <div className="flex gap-3 mb-5 justify-end">
-          {["day", "month", "year"].map((opt) => (
-            <button
-              key={opt}
-              onClick={() => setFilter(opt)}
-              className={`px-4 py-2 rounded-lg font-semibold shadow-sm ${
-                filter === opt
-                  ? "bg-green-600 text-white"
-                  : "bg-white text-gray-700 border border-gray-300"
-              }`}
-            >
-              {opt.toUpperCase()}
-            </button>
-          ))}
+        {/* Graph Controls */}
+        <div className="flex flex-wrap justify-between items-center mb-5">
+          <div className="flex gap-3">
+            {["day", "month", "year"].map((opt) => (
+              <button
+                key={opt}
+                onClick={() => setFilter(opt)}
+                className={`px-4 py-2 rounded-lg font-semibold shadow-sm ${
+                  filter === opt
+                    ? "bg-green-600 text-white"
+                    : "bg-white text-gray-700 border border-gray-300"
+                }`}
+              >
+                {opt.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
+          <select
+            value={graphType}
+            onChange={(e) => setGraphType(e.target.value)}
+            className="border border-gray-300 rounded-lg px-4 py-2 font-semibold text-gray-700 bg-white"
+          >
+            <option value="sales">Sales vs Purchases</option>
+            <option value="profit">Profit vs Loss</option>
+            <option value="billing">Billing Overview</option>
+          </select>
         </div>
 
-        {/* === BAR CHART === */}
+        {/* Dynamic Graph */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <h3 className="text-xl font-semibold mb-4 text-gray-700">
-            Stock Levels ({filter.toUpperCase()} View)
+            {graphType === "sales"
+              ? "Sales vs Purchases"
+              : graphType === "profit"
+              ? "Profit vs Loss"
+              : "Billing Overview"}{" "}
+            ({filter.toUpperCase()} View)
           </h3>
           <ResponsiveContainer width="100%" height={380}>
             <BarChart
-              data={dataOptions[filter]}
+              data={currentData}
               margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -180,12 +264,21 @@ export default function Dashboard() {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar
-                dataKey="stock"
-                fill="#10b981"
-                barSize={50}
-                radius={[10, 10, 0, 0]}
-              />
+              {graphType === "sales" && (
+                <>
+                  <Bar dataKey="sales" fill="#22c55e" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="purchases" fill="#3b82f6" radius={[8, 8, 0, 0]} />
+                </>
+              )}
+              {graphType === "profit" && (
+                <>
+                  <Bar dataKey="profit" fill="#16a34a" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="loss" fill="#ef4444" radius={[8, 8, 0, 0]} />
+                </>
+              )}
+              {graphType === "billing" && (
+                <Bar dataKey="bills" fill="#f59e0b" radius={[8, 8, 0, 0]} />
+              )}
             </BarChart>
           </ResponsiveContainer>
         </div>
